@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Be My Valentine?</title>
+
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      background: url("us.jpg") center / cover no-repeat;
+      overflow: hidden;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 28px 26px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      max-width: 90%;
+      width: 340px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    button {
+      padding: 14px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    #yes {
+      background: #ff4d6d;
+      color: white;
+      margin-right: 10px;
+    }
+
+    #no {
+      background: #ddd;
+      position: absolute;
+    }
+
+    #message {
+      margin-top: 22px;
+      font-size: 18px;
+      color: #ff4d6d;
+      display: none;
+    }
+
+    #taunt {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .heart {
+      position: fixed;
+      font-size: 20px;
+      animation: float 2s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120px) scale(1.6);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay"></div>
+
+  <div class="card" id="card">
+    <h1>Savannah, will you be my Valentine? 💘</h1>
+
+    <button id="yes">Yes 💖</button>
+    <button id="no">No</button>
+
+    <div id="taunt">You can’t escape 😏</div>
+    <div id="message">awww you really said yes?</div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("no");
+    const card = document.getElementById("card");
+    const taunt = document.getElementById("taunt");
+
+    // initial No position
+    noBtn.style.top = "90px";
+    noBtn.style.left = "120px";
+
+    noBtn.addEventListener("mouseenter", moveNo);
+    noBtn.addEventListener("touchstart", moveNo);
+
+    function moveNo() {
+      const cardRect = card.getBoundingClientRect();
+      const maxX = cardRect.width - noBtn.offsetWidth;
+      const maxY = cardRect.height - noBtn.offsetHeight;
+
+      noBtn.style.left = Math.random() * maxX + "px";
+      noBtn.style.top = Math.random() * maxY + "px";
+
+      taunt.style.opacity = 1;
+      setTimeout(() => taunt.style.opacity = 0, 800);
+    }
+
+    document.getElementById("yes").addEventListener("click", () => {
+      document.getElementById("message").style.display = "block";
+      noBtn.style.display = "none";
+      launchHearts();
+    });
+
+    function launchHearts() {
+      for (let i = 0; i < 30; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "💖";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = window.innerHeight - 30 + "px";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 2000);
+      }
+    }
+  </script>
+</body>
+</html>
